@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div id="profile" ng-controller="ProfileController as pCtrl"
+         ng-init="pCtrl.init('{{ user.get_username }}','{{ profile.username }}', {{ profile.followers.count }}, {{ profile.following.count }}, {{ profile.publications.count }})">
+        <div class="meta">
+            <div class="author">
+                <p class="name">{{ profile.username }}</p>
+                <p><input type="button" name="follow" value="{$ pCtrl.status $}"
+                        ng-click="pCtrl.followButton()"></p>
+            </div>
+            <div class="counters">
+                <div>
+                    <p class="text">Publications:</p>
+                    <p class="number">{$ pCtrl.publications_count $}</p>
+                </div>
+                <div>
+                    <p class="text">Following:</p>
+                    <p class="number">{$ pCtrl.following_count $}</p>
+                </div>
+                <div>
+                    <p class="text">Followers:</p>
+                    <p class="number">{$ pCtrl.followers_count $}</p>
+                </div>
+            </div>
+        </div>
+        <div class="publications">
+            <div class="publication" ng-repeat="publication in pCtrl.publications">
+                <a href="/p/{$ publication.id $}">
+                    <img ng-src="{$ publication.thumb_url $}"/>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

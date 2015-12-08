@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Classification{% endblock %}
+{% block content %}
+    <section id="classification">
+        <div class="upper">
+            {% if not_finished %}
+                <div class="running">
+                    <p>{{ user_task }} has already run classification</p>
+                </div>
+            {% else %}
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <div class="buttons">
+                        <label>Run classification: </label>
+                        <input type="submit" class="button" value="Run" />
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+        <div class="publications">
+        {% for publication in publications %}
+            <div class="publication">
+                <div class="meta">
+                    <a href="/users/{{ publication.user.username }}">
+                        <span class="author">{{ publication.user.username }}</span>
+                    </a>
+                    <span class="time">{{ publication.created|date:"d F o" }} at {{ publication.created|time:"H:i" }}</span>
+                </div>
+                <img src="{{ publication.image_file.url }}"/>
+                <p class="sub">
+                    <a href="/p/{{ publication.id }}">Go to comments ({{ publication.comments.count }})</a>
+                </p>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock %}

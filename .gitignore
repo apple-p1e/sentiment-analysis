@@ -1,0 +1,8 @@
+*.pyc
+env/
+website/migrations/
+media/
+.idea/
+*.sqlite3
+*.db
+.DS_Store

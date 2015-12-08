@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Publication{% endblock %}
+{% block content %}
+    <section id="content">
+    <div id="publication" ng-controller="PublicationController as pCtrl"
+         ng-init="pCtrl.init('{{ user.get_username }}',{{ publication.pk }})">
+        <div class="publication">
+            <div class="meta">
+                <a href="/users/{{ publication.user.username }}">
+                    <span class="author">{{ publication.user.username }}</span>
+                </a>
+                <span class="time">{{ publication.created|date:"d F o" }} at {{ publication.created|time:"H:i" }}</span>
+            </div>
+            <div class="image">
+                <img src="{{ publication.image_file.url }}"/>
+            </div>
+            <div class="sub">
+                <span class="delete" ng-click="pCtrl.deletePublication()"
+                        ng-show="pCtrl.show('{{ publication.user }}')">Delete</span>
+            </div>
+        </div>
+        <div class="comments">
+            <div class="comment" ng-repeat="cm in pCtrl.comments">
+                <a class="author" href="/users/{$ cm.username $}">{$ cm.username $}</a>
+                <div class="text" {% if user.is_superuser %}ng-class="{ positive:pCtrl.isPositive(cm.polarity), negative:pCtrl.isNegative(cm.polarity) }"{% endif %}>
+                    {$ cm.text $}
+                </div>
+                <div class="time">
+                    {$ cm.created|date:"dd MMMM yyyy 'at' HH:mm" $}
+                    <span ng-show="pCtrl.show(cm.username)"> |
+                        <span class="delete" ng-click="pCtrl.deleteComment(cm.id)">Delete</span>
+                    </span>
+                </div>
+            </div>
+            <div class="new-comment">
+                <form id="comment-form" ng-submit="pCtrl.submit()">
+                    {% csrf_token %}
+                    <input type="text" id="comment" name="comment"
+                            placeholder="Your comment..." ng-model="pCtrl.comment" required/>
+                </form>
+            </div>
+        </div>
+    </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html ng-app="whackup">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta content='Dynamic' name='document-state'>
+    <link href="/media/documents/faveicon.ico" rel='icon' type='image/png'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/whackup.css' %}">
+</head>
+<body>
+    {% block header %}
+    <div id="header">
+        <a href="/" class="logo"></a>
+        <div class="title">WackUp</div>
+        <div class="toggle-sidebar"></div>
+        <div id="sidebar">
+            <div class="menu">
+                <a><p class="upload">Create publication</p></a>
+                <a href="/feed"><p>Feed</p></a>
+                <a href="#"><p>Search</p></a>
+                <a href="/users/{{ user.get_username }}"><p>Profile</p></a>
+                {% if user.is_superuser %}
+                <a href="{% url 'classification' %}"><p>Classification</p></a>
+                {% endif %}
+                <a href="/login?action=logout"><p>Log out</p></a>
+            </div>
+            <div class="upload-form">
+                <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="file-field">
+                        <div class="label">Select image</div>
+                        <input id="upload" type="file" name="image" onchange="getName(this.value);" required/>
+                    </div>
+                    <div class="buttons">
+                        <input type="submit" class="button" value="Upload" />
+                        <input type="button" name="cancel" value="Cancel"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+    <script type="text/javascript" src="{% static 'js/angular.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/whackup.js' %}"></script>
+</body>
+</html>

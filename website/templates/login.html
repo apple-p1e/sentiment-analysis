@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block header %}
+<div id="header">
+    <a href="/" class="logo"></a>
+    <div class="title">WackUp</div>
+</div>
+{% endblock %}
+
+{% block content %}
+    <section class="container">
+        <div id="login">
+            <h1>Login</h1>
+            <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+                <p>{{ form.username }}</p>
+                <p>{{ form.password }}</p>
+                <p class="submit">
+                    <input type="hidden" name="next" value="/" />
+                    <input type="submit" name="commit" value="Log in">
+                    <a href="/signup">
+                    <input type="button" name="signup" value="Sign up">
+                    </a>
+                </p>
+                <p class="restore"><a href="#">Forgot password?</a></p>
+            </form>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Feed{% endblock %}
+{% block content %}
+    <div id="feed" ng-controller="FeedController as feedCtrl">
+        <div class="publications">
+        <div class="publication" ng-repeat="publication in feedCtrl.publications">
+            <div class="meta">
+                <a href="/users/{$ publication.username $}">
+                    <span class="author">{$ publication.username $}</span>
+                </a>
+                <span class="time">{$ publication.created|date:"dd MMMM yyyy 'at' HH:mm" $}</span>
+            </div>
+            <img ng-src="{$ publication.image_url $}"/>
+            <p class="sub">
+                <a href="/p/{$ publication.id $}">Go to comments ({$ publication.comments_count $})</a>
+            </p>
+        </div>
+        </div>
+    </div>
+{% endblock %}
